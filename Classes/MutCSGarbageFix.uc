@@ -8,7 +8,7 @@ var config bool bFixNetSettings;
 
 replication
 {
-    reliable if (ROLE == ROLE_Authority && bNetInitial)
+    reliable if (ROLE == ROLE_Authority)
         bCollectGarbage, bFixCacheMegSize, bFixServerBrowser, bFixReduceMouseLag, bFixNetSettings;
 }
 
@@ -31,24 +31,29 @@ static event string GetDescriptionText(string PropName)
 		case "bFixCacheMegSize": return "Fix cache meg size";
 		case "bFixServerBrowser": return "Fix the server browser not loading with high netspeed";
 		case "bFixReduceMouseLag": return "disable reduce mouse lag";
+		case "bFixNetSettings": return " fix keepalive, clientrate";
 	}
 
 	return Super.GetDescriptionText(PropName);
 }
 
-simulated function PostNetBeginPlay()
+simulated function Tick(float dt)
 {
     local PlayerController PC;
-    super.PostNetBeginPlay();
+    super.Tick(dt);
     if(level.NetMode != NM_DedicatedServer)
     {
         PC = Level.GetLocalPlayerController();
         if(PC != None)
         {
             if(bCollectGarbage)
+            {
                 PC.ConsoleCommand("obj garbage");
+            }
             if(bFixCacheMegSize)
-                PC.ConsoleCommand("set Engine.GameEngine cachesizemegs 1");
+            {
+                PC.ConsoleCommand("set Engine.GameEngine CacheSizeMegs 1");
+            }
             if(bFixServerBrowser)
             {
                 PC.ConsoleCommand("set XInterface.GUIController MaxSimultaneousPings 40");
@@ -67,6 +72,7 @@ simulated function PostNetBeginPlay()
                 PC.ConsoleCommand("set IpDrv.TcpNetDriver MaxClientRate 1000000");
                 PC.ConsoleCommand("set IpDrv.TcpNetDriver MaxInternetClientRate 1000000");
             }
+            Disable('Tick');
         }
     }
 }
@@ -76,4 +82,8 @@ defaultproperties
     bAddToServerPackages=true
     FriendlyName="GarbageFix"
     Description="Clean up garbage for clients"
+    RemoteRole=ROLE_SimulatedProxy
+    bSkipActorPropertyReplication=false
+    bOnlyDirtyReplication=false
+    bAlwaysRelevant=true
 }
