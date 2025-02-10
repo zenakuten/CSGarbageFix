@@ -22,7 +22,7 @@ KeepAliveTime=0.2, Max(Internet)ClientRate=1000000, bDynamicNetSpeed=False, Nets
 ### bFixMasterServer
 Set the master server for the players.  Options are
 
-   333Networks
-   Errorist
-   333Networks + Errorist
-   OpenSpy
+    333Networks
+    Errorist
+    333Networks + Errorist
+    OpenSpy
