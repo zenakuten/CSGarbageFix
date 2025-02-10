@@ -14,7 +14,15 @@ Fix cache meg size (set to 1)
 Fix max simultanous pings and set standardserversonly to false
 
 ### bFixReduceMouseLag
-disable reduce mouse lag
+sets ReduceMouseLag=False, this reduces latency and increases FPS
 
 ###	bFixNetSettings
-fix keepalive, maxclientrate
+KeepAliveTime=0.2, Max(Internet)ClientRate=1000000, bDynamicNetSpeed=False, Netspeed 1000000
+
+### bFixMasterServer
+Set the master server for the players.  Options are
+
+   333Networks
+   Errorist
+   333Networks + Errorist
+   OpenSpy
